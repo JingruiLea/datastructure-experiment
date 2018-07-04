@@ -7,7 +7,7 @@ class VertNode {
         this.firstEdge = null
     }
 
-    travalseDistination(callback){
+    traversalDestination(callback){
         var cur = this.firstEdge
         var before = null
         while(cur){
@@ -19,8 +19,8 @@ class VertNode {
         }
     }
 
-    deleteDistination(vertName){
-        this.travalseDistination((cur, before)=>{
+    deleteDestination(vertName){
+        this.traversalDestination((cur, before)=>{
             if(cur.name == vertName){
                 if(before == null)
                     vertNode.firstEdge = cur.next
@@ -78,12 +78,9 @@ class Graph {
     }
 
     deleteVert(vertName){
-        var index = -1
-        for(var i = 0; i < this.verts.length; i++){
-            if(this.verts[i].name == vertName){
-                index = i
-            }
-        }
+        var index = this.verts.findIndex(ele => {
+            return ele.name==vertName
+        })
         if(index != -1){
             this.verts.splice(index, 1)
             this.verts.forEach(vertNode =>
@@ -129,7 +126,7 @@ class Graph {
         var vertNode = this.findVert(from)
         if(!vertNode) return null
         if(from == to) return 0
-        let result = vertNode.travalseDistination(node => {
+        let result = vertNode.traversalDestination(node => {
             if(node.name == to)
                 return node.length
         })

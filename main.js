@@ -1,14 +1,14 @@
 var Graph = require('./Graph')
 var MainMenu = require('./MainMenu')
 const readline = require('readline');
-var {dijkstra} = require('./algorithm');
+var algorithm = require('./algorithm');
 
 var graph = new Graph('./data.dat')
 //graph.print()
- //graph.findVert('北门').travalseDistination(node=>console.log(node.name))
-//MainMenu.start()
-console.log(graph.findPath('北门','碧水潭'))
-
+ //graph.findVert('北门').traversalDestination(node=>console.log(node.name))
+MainMenu.start()
+// algorithm.prim(graph, '北门')
+// graph.print()
 // this.reader = readline.createInterface({
 //     input: process.stdin,
 //     output: process.stdout
