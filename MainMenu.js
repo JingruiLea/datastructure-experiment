@@ -2,10 +2,9 @@ const readline = require('readline');
 var fs = require('fs')
 
 const reader = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-    prompt: '请输入 : '
-});
+    input:process.stdin,
+    output:process.stdout
+})
 
 function start(){
     init()
@@ -29,7 +28,6 @@ function start(){
             case '0':
             break
             default:
-                readline.clearScreenDown(process.stdout)
                 console.log('输入错误,请重新输入!')
                 start()
         }
@@ -64,11 +62,13 @@ function printOutFile(fileName){
     console.log(data.toString())    
 }
 
+var temp
+
 function getChoice(callback) {
-    reader.on('line', choice => {
-        callback(choice)
+    temp = callback
+    reader.once('line', line=>{
+        callback(line)
     })
-    reader.prompt()
 }
 
 
