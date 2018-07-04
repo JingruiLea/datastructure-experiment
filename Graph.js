@@ -1,4 +1,5 @@
  var fs = require('fs')
+ var dijkstra = require('./algorithm').dijkstra;
 
 class VertNode {
     constructor(name) {
@@ -10,13 +11,15 @@ class VertNode {
         var cur = this.firstEdge
         var before = null
         while(cur){
-            callback(cur, before)
+            let result
+            if(result = callback(cur, before))
+                return result
             before = cur
             cur = cur.next
         }
     }
 
-    deleteDistination(edgeName){
+    deleteDistination(vertName){
         this.travalseDistination((cur, before)=>{
             if(cur.name == vertName){
                 if(before == null)
@@ -50,6 +53,24 @@ class Graph {
         return null       
     }
 
+    findPath(from, to, Floyd){
+        var result
+        if(Floyd)
+            ;
+        else
+            result = dijkstra(this, from)
+        for(let item of result){
+            if(item.name == to){
+                item.path.unshift(from)
+                item.path.push(to)
+                return {
+                    distance: item.distance,
+                    path: item.path    
+                }
+            }
+        }
+    }
+
     addVert(vertName, firstEdgeName, length){
         var vert = new VertNode(vertName)
         vert.firstEdge = new EdgeNode(firstEdgeName, length)
@@ -73,7 +94,7 @@ class Graph {
     }
 
     initGraph(str){
-        var arr = str.split('\r\n')
+        var arr = str.split('\n')
         for(var item of arr){
             var site = item.split(' ')
             var vertName = site[0]
@@ -108,10 +129,11 @@ class Graph {
         var vertNode = this.findVert(from)
         if(!vertNode) return null
         if(from == to) return 0
-        vertNode.travalseDistination(node =>{
+        let result = vertNode.travalseDistination(node => {
             if(node.name == to)
                 return node.length
         })
+        if(result) return result
         return 32767
     }
 
@@ -131,7 +153,7 @@ class Graph {
     }
 
     print(){
-        var line = '      '
+        var line = '        '
         for(var item of this.verts){
             line += this.paddingAfterSite(item.name) + ' '
         }
