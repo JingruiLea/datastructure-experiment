@@ -3,38 +3,40 @@ var log = console.log
 var graph = require('./Graph')
 var MainMenu = require('./MainMenu')
 
-function start(){
+function start() {
     utils.printOutFile('AdminMenu_0')
-    utils.getChoice(choice =>{
-        switch(choice){
+    utils.getChoice(choice => {
+        switch (choice) {
             case '1':
                 inputNewVert()
-            break
+                break
             case '2':
                 inputNewEdge()
-            break
+                break
             case '3':
                 deleteVert()
-            break
+                break
             case '4':
                 deletePath()
-            break
+                break
             case '0':
                 quit()
-            break
+                break
             default:
         }
     })
 }
 
-async function quit(){
+async function quit() {
     let yes = await utils.yesOrNo('确定退出吗?')
-    if(yes){
+    if (yes) {
         MainMenu.start()
+    } else {
+        start()
     }
 }
 
-async function deleteVert(){
+async function deleteVert() {
     let succ = await utils.simpleInter(
         ['请输入景点名称.'],
         '确定删除 ${0} 景点吗?',
@@ -42,15 +44,15 @@ async function deleteVert(){
         start,
         graph
     )
-    if(!succ){
+    if (!succ) {
         log(`景点不存在, 请检查输入!`)
         start()
-    }else{
+    } else {
         log(`删除成功!`)
     }
 }
 
-async function inputNewVert(){
+async function inputNewVert() {
     await utils.simpleInter(
         ['请输入景点名称.'],
         '确定添加 ${0} 景点吗?',
@@ -61,17 +63,17 @@ async function inputNewVert(){
     console.log(`添加成功!`)
 }
 
-async function inputNewEdge(){
+async function inputNewEdge() {
     let isValid = () => {
         if (!graph.findVert(answer1)) {
             log(`景点 ${answer1} 不存在, 请检查输入!`)
             return false
         }
-        if (!graph.findVert(answer2)){
+        if (!graph.findVert(answer2)) {
             log(`景点 ${answer2} 不存在, 请检查输入!`)
             return false
         }
-        if (isNaN(+answer3)){
+        if (isNaN(+answer3)) {
             log(`${answer3} 不是数字, 请检查输入!`)
             return false
         }
@@ -91,4 +93,4 @@ async function inputNewEdge(){
 
 
 
-module.exports = AdminMenu = {inputNewEdge,deleteVert}
+module.exports = AdminMenu = { inputNewEdge, deleteVert, start }

@@ -1,5 +1,7 @@
 var AdminMenu = require('./AdminMenu')
 var {printOutFile, getChoice} = require('./utils')
+var utils = require('./utils')
+
 
 function start(){
     init()
@@ -29,23 +31,19 @@ function start(){
     })
 }
 
-function loginMenu(){
-    var username,password
+async function loginMenu(){
     printOutFile('MainMenu_login')
-    console.log('请输入用户名:')
-    getChoice(choice=>{
-        username = choice
-        console.log('请输入密码:')
-        getChoice(choice=>{
-            password = choice
-            if(username == password){
-                console.log('登陆成功')
-                AdminMenu.start()
-            }else{
-                loginMenu()
-            }
-        })
-    })
+    let username = await utils.getAnswer('请输入用户名: (输入quit退出)')
+    if(username == 'quit') MainMenu.start()
+    let password = await utils.getAnswer('请输入密码: (输入quit退出)')
+    if(password == 'quit') MainMenu.start()
+    if(username == password){
+        console.log('登陆成功!')
+        AdminMenu.start()
+    }else{
+        console.log('用户名或密码错误!')
+        loginMenu()
+    }
 }
 
 function init() {
