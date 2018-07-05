@@ -15,6 +15,13 @@ function getChoice(callback) {
     })
 }
 
+function getAnswer(question){
+    console.log(question)
+    return new Promise(resolve => {
+        reader.once('line', resolve)
+    })
+}
+
 function printOutFile(fileName){
     if(!fileName.endsWith('.out')){
         fileName += '.out'
@@ -26,7 +33,7 @@ function printOutFile(fileName){
 async function yesOrNo(question){
     var noAnswer = true
     while(noAnswer){
-        console.log(`${question}Y/N`)
+        console.log(`${question} Y/N`)
         var yesOrNo = await getChoice()
         if(yesOrNo.toLowerCase() == 'y'){
             noAnswer = false
@@ -41,40 +48,30 @@ async function yesOrNo(question){
 }
 
 async function interaction(inputHints, confirmInfoProducer, yesCall, noCall){
-    var inputs = []
+    var answers = []
     for(var item of inputHints){
-        console.log(item)
-        inputs.push(await getChoice())
+        answers.push(await getAnswer(item))
     }
-    var confirmInfo = confirmInfoProducer(inputs)
+    var confirmInfo = confirmInfoProducer(answers)
     var yes = await yesOrNo(confirmInfo)
     if(yes)
-        yesCall(inputs)
+        return yesCall(answers)
     else
-        noCall(inputs)
+        noCall(answers)
 }
 
-function simpleInter(arr, str, func, noCall, thisArg){
-    var argstr = '', argsArr = []
+async function simpleInter(arr, str, yesCall, noCall, thisArg){
     for(var i = 0; i < arr.length; i++){
        str = str.replace('${'+ i +'}', '${input['+ i +']}')
-       argstr += `args[${i}],`
     }
-    argstr = argstr.substr(0, argstr.length - 1)
     str = '`'+ str + '`'
     var f = (input)=>{
         return eval(str)
     }
-    if(thisArg)
-        interaction(arr, f, 
-            args => func.apply(thisArg, args),
-            noCall
-        )
-    else
-        interaction(arr, f, 
-            args => eval(func + '('+ argstr + ')'),
-            noCall
-        )
+    return await interaction(arr, f, 
+        args => yesCall.apply(thisArg, args),
+        noCall
+    )
 }
 
-module.exports = utils =  {getChoice, printOutFile, yesOrNo, interaction, simpleInter}
+module.exports = utils =  {getChoice, printOutFile, yesOrNo, interaction, simpleInter, getAnswer}

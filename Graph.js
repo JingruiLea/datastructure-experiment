@@ -23,7 +23,7 @@ class VertNode {
         this.traversalDestination((cur, before)=>{
             if(cur.name == vertName){
                 if(before == null)
-                    vertNode.firstEdge = cur.next
+                    this.firstEdge = cur.next
                 else
                     before.next = cur.next
             }
@@ -83,13 +83,14 @@ class Graph {
 
     deleteVert(vertName){
         var index = this.verts.findIndex(ele => {
-            return ele.name==vertName
+            return ele.name == vertName
         })
         if(index != -1){
             this.verts.splice(index, 1)
             this.verts.forEach(vertNode =>
-                vertNode.deleteDistination(vertName)
+                vertNode.deleteDestination(vertName)
             )
+            return true
         }   
         return false
     }
@@ -107,7 +108,6 @@ class Graph {
     }
 
     addEdgeOrNewVert(vertName, edgeName, edgeLength){
-        console.log(vertName, edgeName, edgeLength)
         var foundVert = this.findVert(vertName)
         if(foundVert){
             if(!foundVert.firstEdge){
@@ -125,9 +125,9 @@ class Graph {
 
     delEdge(from, to){
         var foundVert = this.findVert(from)
-        foundVert.deleteDistination(to)
+        foundVert.deleteDestination(to)
         foundVert = this.findVert(to)
-        foundVert.deleteDistination(from)
+        foundVert.deleteDestination(from)
     }
 
     getDistance(from, to){

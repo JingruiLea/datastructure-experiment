@@ -5,7 +5,7 @@ const readline = require('readline');
 var algorithm = require('./algorithm');
 var utils = require('./utils');
 
-AdminMenu.inputNewEdge()
+AdminMenu.deleteVert()
 
 //graph.findVert('北门').traversalDestination(node=>console.log(node.name))
 //MainMenu.start()
