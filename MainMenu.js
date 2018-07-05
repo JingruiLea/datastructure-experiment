@@ -1,10 +1,5 @@
-const readline = require('readline');
-var fs = require('fs')
-
-const reader = readline.createInterface({
-    input:process.stdin,
-    output:process.stdout
-})
+var AdminMenu = require('./AdminMenu')
+var {printOutFile, getChoice} = require('./utils')
 
 function start(){
     init()
@@ -44,7 +39,10 @@ function loginMenu(){
         getChoice(choice=>{
             password = choice
             if(username == password){
-                console.log('success')
+                console.log('登陆成功')
+                AdminMenu.start()
+            }else{
+                loginMenu()
             }
         })
     })
@@ -53,23 +51,5 @@ function loginMenu(){
 function init() {
     printOutFile('MainMenu')
 }
-
-function printOutFile(fileName){
-    if(!fileName.endsWith('.out')){
-        fileName += '.out'
-    }
-    var data = fs.readFileSync('./.out/'+ fileName)
-    console.log(data.toString())    
-}
-
-var temp
-
-function getChoice(callback) {
-    temp = callback
-    reader.once('line', line=>{
-        callback(line)
-    })
-}
-
 
 module.exports = MainMenu = {start}

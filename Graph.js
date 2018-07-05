@@ -77,6 +77,10 @@ class Graph {
         this.verts.push(vert)
     }
 
+    addAloneVert(vertName){
+        this.verts.push(new VertNode(vertName))
+    }
+
     deleteVert(vertName){
         var index = this.verts.findIndex(ele => {
             return ele.name==vertName
@@ -97,14 +101,18 @@ class Graph {
             var vertName = site[0]
             var edgeName = site[1]
             var edgeLength = parseInt(site[2])
-            this.addEdge(vertName, edgeName, edgeLength)
-            this.addEdge(edgeName, vertName, edgeLength)
+            this.addEdgeOrNewVert(vertName, edgeName, edgeLength)
+            this.addEdgeOrNewVert(edgeName, vertName, edgeLength)
         }
     }
 
-    addEdge(vertName, edgeName, edgeLength){
+    addEdgeOrNewVert(vertName, edgeName, edgeLength){
+        console.log(vertName, edgeName, edgeLength)
         var foundVert = this.findVert(vertName)
         if(foundVert){
+            if(!foundVert.firstEdge){
+                foundVert.firstEdge = new EdgeNode(edgeName, edgeLength)
+            }
             var curEdge = foundVert.firstEdge
             while(curEdge.next){
                 curEdge = curEdge.next
@@ -178,4 +186,6 @@ class Graph {
     }
 }
 
-module.exports = Graph
+var graph = new Graph('./data.dat')
+
+module.exports = graph

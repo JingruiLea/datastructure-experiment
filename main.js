@@ -1,12 +1,14 @@
-var Graph = require('./Graph')
+var graph = require('./Graph')
 var MainMenu = require('./MainMenu')
+var AdminMenu = require('./AdminMenu')
 const readline = require('readline');
 var algorithm = require('./algorithm');
+var utils = require('./utils');
 
-var graph = new Graph('./data.dat')
-//graph.print()
- //graph.findVert('北门').traversalDestination(node=>console.log(node.name))
-MainMenu.start()
+AdminMenu.inputNewEdge()
+
+//graph.findVert('北门').traversalDestination(node=>console.log(node.name))
+//MainMenu.start()
 // algorithm.prim(graph, '北门')
 // graph.print()
 // this.reader = readline.createInterface({
