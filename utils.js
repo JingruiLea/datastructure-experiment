@@ -3,8 +3,8 @@ var fs = require('fs')
 
 
 const reader = readline.createInterface({
-    input:process.stdin,
-    output:process.stdout
+    input: process.stdin,
+    output: process.stdout,
 })
 
 function getChoice(callback) {
@@ -14,6 +14,7 @@ function getChoice(callback) {
         reader.once('line', resolve)
     })
 }
+
 
 function getAnswer(question){
     console.log(question)
@@ -74,4 +75,10 @@ async function simpleInter(arr, str, yesCall, noCall, thisArg){
     )
 }
 
-module.exports = utils =  {getChoice, printOutFile, yesOrNo, interaction, simpleInter, getAnswer}
+module.exports = utils =
+  { getChoice, 
+    printOutFile, 
+    yesOrNo, 
+    interaction, 
+    simpleInter, 
+    getAnswer}

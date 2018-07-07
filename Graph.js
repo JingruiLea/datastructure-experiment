@@ -184,6 +184,43 @@ class Graph {
         }
         console.table(table)
     }
+
+    saveToFile(filename){
+        class Entry {
+            constructor(from, to, dis) {
+                this.from = from;
+                this.to = to;
+                this.dis = dis;
+            }
+            equals(entry){
+                return (
+                    this.from == entry.from &&
+                    this.to == entry.to &&
+                    this.dis == entry.dis
+                )||(
+                    this.from == entry.to &&
+                    this.to == entry.from &&
+                    this.dis == entry.dis
+                )
+            }
+            toString(){
+                return `${this.from} ${this.to} ${this.dis}\n`
+            }
+        }
+        let results = []
+        for(var item of this.verts){
+            item.traversalDestination(cur=>{
+                let entry = new Entry(item.name, cur.name, cur.length)
+                if(results.findIndex(e => {return e.equals(entry)}) < 0)
+                    results.push(entry)
+            })
+        }
+        let data = ''
+        for(let e of results){
+            data += e.toString()
+        }
+        fs.writeFileSync(filename, data)
+    }
 }
 
 var graph = new Graph('./data.dat')

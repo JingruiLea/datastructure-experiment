@@ -10,6 +10,7 @@ function dijkstra(graph, from){
             t.push({name: item.name, distance: dis, path: []})
         }
     })
+    if(s.length == 0) return []
     var times = t.length
     for(let i = 0; i < times; i++){
         let minDis = 32767, nearestVert

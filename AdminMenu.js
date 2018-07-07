@@ -19,12 +19,56 @@ function start() {
             case '4':
                 deletePath()
                 break
+            case '5':
+                saveToFile()
+            break
             case '0':
                 quit()
                 break
             default:
+                console.log('输入错误,请重新输入!')
+                start()
         }
     })
+}
+
+async function deletePath(){
+    let isValid = () => {
+        if(answer1 == answer2){
+            console.log('起点终点相同!')
+            return false
+        }
+        if (!graph.findVert(answer1)) {
+            log(`景点 ${answer1} 不存在, 请检查输入!`)
+            return false
+        }
+        if (!graph.findVert(answer2)) {
+            log(`景点 ${answer2} 不存在, 请检查输入!`)
+            return false
+        }
+        if (graph.getDistance(answer2) == 32767) {
+            log(`没有从 ${answer1} 到 ${answer2} 的路径, 请检查输入!`)
+            return false
+        }
+        return true
+    }
+
+    let answer1 = await utils.getAnswer('请输入路径起点.')
+    let answer2 = await utils.getAnswer('请输入路径终点.')
+    let yes = await utils.yesOrNo(`确定删除从 ${answer1} 到 ${answer2} 的路径吗?`)
+    if (yes && isValid()){
+        graph.delEdge(answer1, answer2)
+        console.log('删除成功!')
+    }else
+        start()
+}
+
+async function saveToFile(){
+    let yes = await utils.yesOrNo('确定保存吗?')
+    if (yes) {
+        graph.saveToFile('data.dat')
+    }
+    start()
 }
 
 async function quit() {
@@ -65,6 +109,10 @@ async function inputNewVert() {
 
 async function inputNewEdge() {
     let isValid = () => {
+        if(answer1 == answer2){
+            console.log('起点终点相同!')
+            return false
+        }
         if (!graph.findVert(answer1)) {
             log(`景点 ${answer1} 不存在, 请检查输入!`)
             return false
@@ -84,9 +132,10 @@ async function inputNewEdge() {
     let answer2 = await utils.getAnswer('请输入路径终点.')
     let answer3 = await utils.getAnswer('请输入路径长度.')
     let yes = await utils.yesOrNo(`确定添加从 ${answer1} 到 ${answer2} 的 ${answer3} 米路径吗?`)
-    if (yes && isValid())
+    if (yes && isValid()){
         graph.addEdgeOrNewVert(answer1, answer2, answer3)
-    else
+        console.log('添加成功!')
+    }else
         start()
 }
 
