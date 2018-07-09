@@ -1,10 +1,9 @@
 var graph = require('./Graph')
-var MainMenu = require('./MainMenu')
-var AdminMenu = require('./AdminMenu')
-const readline = require('readline');
+//var MainMenu = require('./MainMenu')
+//var AdminMenu = require('./AdminMenu')
 var algorithm = require('./algorithm');
-var utils = require('./utils');
+//var utils = require('./utils');
 
 //MainMenu.start()
 
-console.log(JSON.stringify(graph))
+console.log(algorithm.minimumCost(graph, '北门', '狮子山'))

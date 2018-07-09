@@ -64,6 +64,45 @@ function prim(graph, start){
     console.log(paths)
 }
 
+function dfs(graph, from, to){
+    result = []
+    dfsRecursion([from], graph, from, to, result)
+    return result
+}
+
+function dfsRecursion(result, graph, from, to, totalResult) {
+    var vert = graph.findVert(from)
+    vert.visited = true
+    vert.traversalDestination((cur) => {
+        if ((!graph.findVert(cur.name).visited)||cur.name == to) {
+            result.push(cur.name)
+            if (cur.name == to) {
+                totalResult.push(JSON.parse(JSON.stringify(result)))
+            } else {
+                dfsRecursion(result, graph, cur.name, to, totalResult)
+                graph.findVert(cur.name).visited = false
+            }
+            result.pop()
+        }
+    })
+}
+
+function minimumCost(graph,from,to){
+    var paths = dfs(graph, from, to)
+    var minCostIndex, minCost = Infinity
+    paths.forEach((item,index)=>{
+        if(item.length != graph.verts.length) return
+        for(var dis=0,i=0; i<item.length-1; i++){
+           dis += graph.getDistance(item[i],item[i+1])
+        }
+        if(dis < minCost){
+            minCost = dis
+            minCostIndex = index
+        }     
+    })
+    return [paths[minCostIndex],minCost]
+}
+
 class TreeNode{
     constructor(name){
         this.name = name
@@ -87,4 +126,4 @@ class Tree{
         })
     }
 }
-module.exports = algorithm = {dijkstra,prim,Tree,TreeNode}
+module.exports = algorithm = {dijkstra,prim,Tree,TreeNode,dfs,minimumCost}
