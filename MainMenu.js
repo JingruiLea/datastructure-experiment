@@ -2,6 +2,7 @@ var AdminMenu = require('./AdminMenu')
 var {printOutFile, getChoice} = require('./utils')
 var utils = require('./utils')
 var graph = require('./Graph')
+var algorithm = require('./algorithm');
 
 
 function start(){
@@ -12,17 +13,19 @@ function start(){
                 loginMenu()
             break
             case '2':
+                graph.print()
             break
             case '3':
+                guide()
             break
             case '4':
+
             break
             case '5':
                 minDistance()
             break
             case '6':
-            break
-            case '7':
+
             break
             case '0':
                 quit()
@@ -34,18 +37,8 @@ function start(){
     })
 }
 
-
-async function quit() {
-    let yes = await utils.yesOrNo('确定退出吗?')
-    if (yes) {
-        process.exit(0)
-    } else {
-        start()
-    }
-}
-
-async function minDistance(){
-    var isValid = ()=>{
+async function guide(){
+    var isValid = (from,to)=>{
         if(from == to){
             console.log('起点终点相同!')
             return false
@@ -63,14 +56,62 @@ async function minDistance(){
 
     let success = false
     while(!success){
-        let from = await utils.getAnswer('请输入起点名称: `(输入quit退出)`')
-        if(from == 'quit') success = true
+        success = true
+        let from = await utils.getAnswer('请输入起点名称: (输入quit退出)')
+        if(from == 'quit'){
+            break
+        }
         let to = await utils.getAnswer('请输入终点名称: (输入quit退出)')
-        if(to == 'quit') success = true
-        if(isValid()){
-            success = true
+        if(to == 'quit'){
+            break
+        }
+        if(isValid(from,to)){
+            console.log(algorithm.minimumCost(graph, from, to))
+        }else{
+            success = false
+            console.log(`请重新输入!`)
+        }
+    }
+    MainMenu.start()
+}
+
+async function quit() {
+    let yes = await utils.yesOrNo('确定退出吗?')
+    if (yes) {
+        process.exit(0)
+    } else {
+        start()
+    }
+}
+
+async function minDistance(){
+    var isValid = (from,to)=>{
+        if(from == to){
+            console.log('起点终点相同!')
+            return false
+        }
+        if(!graph.findVert(from)){
+            console.log(`不存在景点 ${from}!`)
+            return false
+        }
+        if(!graph.findVert(to)){
+            console.log(`不存在景点 ${to}!`)
+            return false
+        }
+        return true
+    }
+
+    let success = false
+    while(!success){
+        success = true
+        let from = await utils.getAnswer('请输入起点名称: `(输入quit退出)`')
+        if(from == 'quit') break
+        let to = await utils.getAnswer('请输入终点名称: (输入quit退出)')
+        if(to == 'quit') break
+        if(isValid(from,to)){
             console.log(graph.findPath(from, to))
         }else{
+            success = false
             console.log(`请重新输入!`)
         }
     }

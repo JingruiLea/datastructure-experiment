@@ -1,5 +1,5 @@
  var fs = require('fs')
- var dijkstra = require('./algorithm').dijkstra;
+ var algorithm = require('./algorithm');
 
 class VertNode {
     constructor(name) {
@@ -31,13 +31,7 @@ class VertNode {
     }
 }
 
-class EdgeNode {
-    constructor(name, length) {
-        this.name = name
-        this.length = length
-        this.next = null
-    }
-}
+class EdgeNode extends algorithm.LinkedListNode{}
 
 class Graph {
     constructor(fileName) {
@@ -58,7 +52,7 @@ class Graph {
         if(Floyd)
             ;
         else
-            result = dijkstra(this, from)
+            result = algorithm.dijkstra(this, from)
         for(let item of result){
             if(item.name == to){
                 item.path.unshift(from)
@@ -186,21 +180,21 @@ class Graph {
     }
 
     saveToFile(filename){
-        class Entry {
+        class Tuple {
             constructor(from, to, dis) {
                 this.from = from;
                 this.to = to;
                 this.dis = dis;
             }
-            equals(entry){
+            equals(tuple){
                 return (
-                    this.from == entry.from &&
-                    this.to == entry.to &&
-                    this.dis == entry.dis
+                    this.from == tuple.from &&
+                    this.to == tuple.to &&
+                    this.dis == tuple.dis
                 )||(
-                    this.from == entry.to &&
-                    this.to == entry.from &&
-                    this.dis == entry.dis
+                    this.from == tuple.to &&
+                    this.to == tuple.from &&
+                    this.dis == tuple.dis
                 )
             }
             toString(){
@@ -210,9 +204,9 @@ class Graph {
         let results = []
         for(var item of this.verts){
             item.traversalDestination(cur=>{
-                let entry = new Entry(item.name, cur.name, cur.length)
-                if(results.findIndex(e => {return e.equals(entry)}) < 0)
-                    results.push(entry)
+                let tuple = new tuple(item.name, cur.name, cur.length)
+                if(results.findIndex(e => {return e.equals(tuple)}) < 0)
+                    results.push(tuple)
             })
         }
         let data = ''

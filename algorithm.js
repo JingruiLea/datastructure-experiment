@@ -54,7 +54,7 @@ function prim(graph, start){
             }
         result.push(vertNameAdd)
         paths.push(path)
-        minDis = 32768
+        minDis = Infinity
         let index = verts.findIndex(ele => {
             return ele.name == vertNameAdd
         })
@@ -65,9 +65,28 @@ function prim(graph, start){
 }
 
 function dfs(graph, from, to){
+    graph.verts.forEach(e => e.visited = false)
     result = []
     dfsRecursion([from], graph, from, to, result)
     return result
+}
+
+function bfs(graph, from, to){
+    var handle = vert => {
+        vert.visited = true
+    }
+
+    graph.verts.forEach(e => e.visited = false)
+    var queue = [graph.findVert(from)]
+    while(queue.length>0){
+        var cur = queue.shift()
+        handle(cur)
+        cur.traversalDestination(cur=>{
+            var v = graph.findVert(cur.name)
+            if(!v.visited)
+                queue.push(v)
+        })
+    }
 }
 
 function dfsRecursion(result, graph, from, to, totalResult) {
@@ -126,4 +145,20 @@ class Tree{
         })
     }
 }
-module.exports = algorithm = {dijkstra,prim,Tree,TreeNode,dfs,minimumCost}
+class LinkedListNode {
+    constructor(name, length) {
+        this.name = name
+        this.length = length
+        this.next = null
+    }
+}
+module.exports = algorithm = 
+{
+    dijkstra, 
+    prim, 
+    Tree, 
+    TreeNode, 
+    dfs, 
+    minimumCost,
+    LinkedListNode
+}
