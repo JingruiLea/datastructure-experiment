@@ -1,7 +1,8 @@
 paper.install(window);
 window.vvvs = []
 window.graph = []
-window.positions = [["北门",531,56],
+window.positions = [
+["北门",531,56],
 ["狮子山",400,119],
 ["仙云石",845,102],
 ["一线天",238,229],
@@ -13,7 +14,8 @@ window.positions = [["北门",531,56],
 ["红叶亭",555,632],
 ["碧水亭",813,415],
 ["朝日峰",950,564],
-["碧水潭",857,694]]
+["碧水潭",857,694]
+]
 
 function deleteVert(name){
     $.ajax({url:`/deleteVert?vertname=${name}`})
@@ -35,6 +37,7 @@ function Button(label, x, y){
 
 function site(name,x,y){
     this.name = name
+    this.modifying = false
     this.circle = new Path.Circle({
         center: [x, y],
         radius: 30,
@@ -62,7 +65,7 @@ function site(name,x,y){
     }
     this.deleteButton.text.visible = false
     var that = this
-    this.g.onMouseDrag = (e)=>{
+    this.g.onMouseDrag = this.modifying? (e)=>{
         that.g.position.x += e.delta.x
         that.g.position.y += e.delta.y
         this.deleteButton.text.position.x += e.delta.x
@@ -93,9 +96,9 @@ function site(name,x,y){
         for(let i of vvvs){
             positions.push([i.name,i.g.position.x,i.g.position.y])
         }
-    }
+    }:() => {}
     this.clicked = false
-    this.g.onClick = e => {
+    this.g.onClick = this.modifying ? e => {
         if(!this.clicked){
             this.clicked = true
             this.deleteButton.text.visible = true
@@ -104,7 +107,7 @@ function site(name,x,y){
             this.clicked = false
         }
         
-    }
+    }:() => {}
     this.starts = [] //以该点为起点的线对象
     window.sss = this.starts
     this.ends = []   //以该点为终点的线对象

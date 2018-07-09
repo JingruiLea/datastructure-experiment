@@ -1,17 +1,57 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Page Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="./style/main.css" />
-    <script src="./js/jquery.js"></script>
-    <script src="./js/paper-full.min.js"></script>
-    <script src="./js/main.js"></script>
+    <!-- <link rel="stylesheet" type="text/css" href="./style/google.css" /> -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+    <!-- <link rel="stylesheet" type="text/css" href="./style/material.css" /> -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/material-design-icons/3.0.1/iconfont/material-icons.css">
+    <link rel="stylesheet" type="text/css" href="./style/muse-ui.css" />
 </head>
+
 <body>
+    <div id="toolbar">
+        <mu-container>
+            <mu-row>
+                <mu-button>
+                    查路!
+                    <mu-icon @click="searchClicked" right value="search"></mu-icon>
+                </mu-button>
+                <mu-auto-complete v-show="searching" :data="sites" label="提示输入内容" v-model="value1"></mu-auto-complete>
+                <mu-auto-complete v-show="searching" :data="sites" label="提示输入内容" v-model="value1"></mu-auto-complete>
+            </mu-row>
+        </mu-container>
+    </div>
     <canvas id="myCanvas" resize>
     </canvas>
 </body>
+<script src="./js/vue.js"></script>
+<script src="./js/muse-ui.js"></script>
+<script src="./js/paper-full.min.js"></script>
+<script src="./js/main.js"></script>
+<script src="./js/vuemain.js"></script>
+<script>
+    const sites = ["北门", "狮子山", "仙云石", "一线天",
+        "飞流瀑", "仙武湖", "九曲桥", "观云台",
+        "花卉园", "红叶亭", "碧水亭", "朝日峰", "碧水潭"]
+    window.app = new Vue({
+        el: '#toolbar',
+        data: {
+            sites,
+            value1: '',
+            searching: false
+        },
+        methods:{
+            searchClicked:()=>{
+                
+            }
+        }
+    })
+</script>
+
 </html>
