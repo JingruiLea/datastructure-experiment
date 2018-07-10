@@ -31,8 +31,8 @@ function start(){
                 quit()
             break
             default:
-                console.log('输入错误,请重新输入!')
                 start()
+                console.log('输入错误,请重新输入!')
         }
     })
 }
@@ -121,9 +121,15 @@ async function minDistance(){
 async function loginMenu(){
     printOutFile('MainMenu_login')
     let username = await utils.getAnswer('请输入用户名: (输入quit退出)')
-    if(username == 'quit') MainMenu.start()
+    if(username == 'quit') {
+        MainMenu.start()
+        return
+    }
     let password = await utils.getAnswer('请输入密码: (输入quit退出)')
-    if(password == 'quit') MainMenu.start()
+    if(password == 'quit') {
+        MainMenu.start()
+        return
+    }
     if(username == password){
         console.log('登陆成功!')
         AdminMenu.start()

@@ -1,4 +1,30 @@
-var Graph = require('./Graph')
+var graph = require('./Graph.js')
+
+function bellman_ford(graph, from) {
+    let n = graph.verts.length, update = true, count = 0
+    let distances = {}
+    graph.verts.forEach(e => {
+        distances[e.name] = {}
+        distances[e.name].length = Infinity
+        distances[e.name].path = []
+    })
+    distances[from].length = 0
+    while (update && count < n - 1) {
+        update = false
+        graph.verts.forEach(e => {
+            e.traversalDestination(cur => {
+                if (distances[e.name].length + cur.length < distances[cur.name].length) {
+                    distances[cur.name].length = distances[e.name].length + cur.length
+                    distances[cur.name].path.pop()
+                    distances[cur.name].path.push([e.name,cur.name].toString())
+                    update = true
+                }
+            })
+        })
+    }
+    console.log(distances)
+}
+
 
 function dijkstra(graph, from){
     var s = [], t = []
@@ -160,5 +186,6 @@ module.exports = algorithm =
     TreeNode, 
     dfs, 
     minimumCost,
-    LinkedListNode
+    LinkedListNode,
+    bellman_ford
 }
