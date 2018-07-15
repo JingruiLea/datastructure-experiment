@@ -59,8 +59,8 @@ async function deletePath(){
     if (yes && isValid()){
         graph.delEdge(answer1, answer2)
         console.log('删除成功!')
-    }else
-        start()
+    }
+    start()
 }
 
 async function saveToFile(){
@@ -97,14 +97,13 @@ async function deleteVert() {
 }
 
 async function inputNewVert() {
-    await utils.simpleInter(
-        ['请输入景点名称.'],
-        '确定添加 ${0} 景点吗?',
-        graph.addAloneVert,
-        start,
-        graph
-    )
-    console.log(`添加成功!`)
+    let site = await utils.getAnswer('请输入景点名称.')
+    let yes = await utils.yesOrNo(`确定添加 ${site} 景点吗?`)
+    if(yes){
+        graph.addAloneVert(site)
+        console.log(`添加成功!`)
+    }
+    start()
 }
 
 async function inputNewEdge() {
@@ -135,8 +134,8 @@ async function inputNewEdge() {
     if (yes && isValid()){
         graph.addEdgeOrNewVert(answer1, answer2, answer3)
         console.log('添加成功!')
-    }else
-        start()
+    }
+    start()
 }
 
 

@@ -37,7 +37,7 @@ function Button(label, x, y){
 
 function site(name,x,y){
     this.name = name
-    this.modifying = false
+    this.modifying = true
     this.circle = new Path.Circle({
         center: [x, y],
         radius: 30,

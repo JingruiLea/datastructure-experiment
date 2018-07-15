@@ -1,9 +1,9 @@
 class CarPark{
-    static MAX_SIZE = 10
     constructor(){
         this.park = []
         this.tempPark = []
         this.detour = []
+        this.log = []
     }
 
     carEnter(name){
@@ -12,12 +12,18 @@ class CarPark{
         }else{
             this.park.push(name)
         }
+        log.push(`enter a car ${name} at ${new Date().getTime()}`)
     }
 
     carOut(name){
+        let succ = false
         while(this.park.length > 0){
             let car = this.park.pop()
-            if(item == name) break
+            if(item == name){
+                log.push(`out a car ${name} at ${new Date().getTime()}`)
+                succ = true
+                break
+            }
             this.tempPark.push(car)
         }
         while(this.tempPark.length > 0){
@@ -27,5 +33,8 @@ class CarPark{
         if(this.detour.length > 0){
             this.park.push(this.detour.shift())
         }
+        return succ
     }
 }
+CarPark.MAX_SIZE = 10
+module.exports = new CarPark() 

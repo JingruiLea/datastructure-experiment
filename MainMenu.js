@@ -3,7 +3,7 @@ var {printOutFile, getChoice} = require('./utils')
 var utils = require('./utils')
 var graph = require('./Graph')
 var algorithm = require('./algorithm');
-
+var CarParkMenu = require('./CarParkMenu')
 
 function start(){
     printOutFile('MainMenu')
@@ -19,13 +19,13 @@ function start(){
                 guide()
             break
             case '4':
-
+                outPutSiteOrder()
             break
             case '5':
                 minDistance()
             break
             case '6':
-
+                CarParkMenu.start()
             break
             case '0':
                 quit()
@@ -35,6 +35,13 @@ function start(){
                 console.log('输入错误,请重新输入!')
         }
     })
+}
+
+function outPutSiteOrder(){
+    console.log(graph.verts.map(e=>{
+        return e.name
+    }));
+    start()
 }
 
 async function guide(){
